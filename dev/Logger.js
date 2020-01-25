@@ -18,26 +18,53 @@ define([
 ], function() {
     "use strict";
 
-    function log(level, label, msg) {
-        print("[" + level + " " + label + "] " + String(msg));
-    }
+    var disabled = {};
 
-    function Logger(label) {
-        this.label = String(label);
+    function Logger(label, printer) {
+        if ("string" !== typeof(label) || 0 === label.length) {
+            throw new Error("Invalid 'label' specified, value: [" + label + "]");
+        }
+        this.label = label;
+        if ("undefined" === typeof(printer)) {
+            this.printer = null;
+        } else if ("function" === typeof(printer)) {
+            this.printer = printer;
+        } else {
+            throw new Error("Invalid 'printer' specified, value: [" + printer + "]");
+        }
     }
 
     Logger.prototype = {
-        info(msg) {
-            log("info", this.label, msg);
+        log: function(level, msg) {
+            if (true === disabled[this.label]) {
+                return;
+            }
+            var str = "[" + level + " " + this.label + "] " + String(msg);
+            if (null === this.printer) {
+                print(str);
+            } else {
+                this.printer(str);
+            }
         },
 
-        warn(msg) {
-            log("WARN", this.label, msg);
+        info: function(msg) {
+            this.log("info", msg);
         },
 
-        error(msg) {
-            log("ERROR", this.label, msg);
+        warn: function(msg) {
+            this.log("WARN", msg);
+        },
+
+        error: function(msg) {
+            this.log("ERROR", msg);
         }
+    };
+
+    Logger.disableLabel = function(label) {
+        if ("string" !== typeof(label) || 0 === label.length) {
+            throw new Error("Invalid 'label' specified, value: [" + label + "]");
+        }
+        disabled[label] = true;
     };
 
     return Logger;

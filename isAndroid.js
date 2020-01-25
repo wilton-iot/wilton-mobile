@@ -18,5 +18,6 @@ define([
 ], function() {
     "use strict";
 
-    return true === WILTONMOBILE_isAndroid;
+    return "undefined" !== typeof(WILTONMOBILE_isAndroid) &&
+            true === WILTONMOBILE_isAndroid;
 });

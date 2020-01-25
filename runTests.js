@@ -24,9 +24,11 @@ define([
     "wilton-mobile/test/common/filterTest",
     "wilton-mobile/test/common/includesTest",
     "wilton-mobile/test/common/listPropsTest",
-    "wilton-mobile/test/common/mapTest"
+    "wilton-mobile/test/common/mapTest",
 
-    // main
+    // api
+    "wilton-mobile/test/LoggerTest"
+
 ], function() {
     return {
         main: function() {

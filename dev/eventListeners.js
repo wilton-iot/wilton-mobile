@@ -16,16 +16,15 @@
 
 define([
     "module",
-    "../common/isFunction",
-    "../common/isString",
+    "../common/defaultObject",
     "./Logger"
-], function(module, Logger) {
+], function(module, defaultObject, Logger) {
     "use strict";
     var logger = new Logger(module.id);
 
     var listeners = [];
 
-    function add(name, event, fun) {
+    function add(options, callback) {
         if (!isString(name)) {
             throw new Error("Invalid non-string 'name' specified, value: [" + name + "]");
         }

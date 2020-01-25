@@ -15,22 +15,35 @@
  */
 
 define([
-], function() {
+    "wilton-mobile/test/assert",
+    "wilton-mobile/Logger"
+], function(assert, Logger) {
     "use strict";
 
-    function Logger() {
-        
-    }
+    print("test: common/Logger");
 
-    Logger.prototype = {
-        info() {
-            
-        },
+    // validation
 
-        error() {
-            
-        }
-    };
+    assert.throws(function() { new Logger(); });
+    assert.throws(function() { new Logger(""); });
+    assert.throws(function() { new Logger("foo", "bar"); });
 
-    return Logger;
+    // printer
+
+    var calledTimes = 0;
+    var logger = new Logger("foo", function(st, arg2) {
+        calledTimes += 1;
+        assert.equal(typeof(st), "string");
+        assert.equal(typeof(arg2), "undefined");
+        assert(-1 !== st.indexOf("foo"));
+    });
+    logger.info("bar");
+    logger.warn([42]);
+    logger.error(new Error("baz"));
+    assert.equal(calledTimes, 3);
+
+    // disable label
+    Logger.disableLabel("foo");
+    logger.info("boo");
+    assert.equal(calledTimes, 3);
 });
