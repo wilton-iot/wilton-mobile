@@ -15,19 +15,17 @@
  */
 
 define([
-], function() {
+    "wilton-mobile/test/assert",
+    "wilton-mobile/common/checkNonEmptyString"
+], function(assert, checkNonEmptyString) {
     "use strict";
 
-    return function(list, fun) {
-        if (!(list instanceof Array)) throw new Error("Specified collection is not an Array");
-        if (!("function" === typeof(fun))) throw new Error("Specified callback is not a Function");
- 
-        var res = [];
-        for (var i = 0; i < list.length; i++) {
-            res.push(fun(list[i], i));
-        }
+    print("test: common/checkNonEmptyString");
 
-        return res;
-    };
+    checkNonEmptyString("foo", "bar");
+    checkNonEmptyString(null, "bar");
+    assert.throws(function() { checkNonEmptyString(); });
+    assert.throws(function() { checkNonEmptyString("foo"); });
+    assert.throws(function() { checkNonEmptyString("foo", ""); });
 
 });

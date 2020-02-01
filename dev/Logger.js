@@ -55,8 +55,17 @@ define([
             this.log("WARN", msg);
         },
 
-        error: function(msg) {
-            this.log("ERROR", msg);
+        error: function(msg, e) {
+            var message = msg;
+            if ("undefined" !== typeof(e) &&
+                    "undefined" !== typeof(e.message) &&
+                    "undefined" !== typeof(e.stack)) {
+                message += "\n";
+                message += e.message;
+                message += "\n";
+                message += e.stack;
+            }
+            this.log("ERROR", message);
         }
     };
 

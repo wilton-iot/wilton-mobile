@@ -25,7 +25,7 @@ define([
         var res = [];
         for (var i = 0; i < list.length; i++) {
             var el = list[i];
-            if (true === fun(el)) {
+            if (true === fun(el, i)) {
                 res.push(el);
             }
         }

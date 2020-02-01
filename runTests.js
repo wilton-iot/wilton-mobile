@@ -18,6 +18,7 @@ define([
     // common
     "wilton-mobile/test/common/callOrIgnoreTest",
     "wilton-mobile/test/common/callOrThrowTest",
+    "wilton-mobile/test/common/checkNonEmptyStringTest",
     "wilton-mobile/test/common/checkPropTypeTest",
     "wilton-mobile/test/common/checkPropsTest",
     "wilton-mobile/test/common/defaultObjectTest",
@@ -27,6 +28,7 @@ define([
     "wilton-mobile/test/common/mapTest",
 
     // api
+    "wilton-mobile/test/eventListenersTest",
     "wilton-mobile/test/LoggerTest"
 
 ], function() {

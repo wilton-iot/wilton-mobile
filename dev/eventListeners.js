@@ -15,28 +15,80 @@
  */
 
 define([
-    "module",
-    "../common/defaultObject",
+    // call
+    "../common/callOrIgnore",
+    "../common/callOrThrow",
+    // check
+    "../common/checkNonEmptyString",
+    "../common/checkProps",
+    "../common/checkPropType",
+    // other
+    "../common/filter",
     "./Logger"
-], function(module, defaultObject, Logger) {
+], function(
+        callOrIgnore, callOrThrow, // call
+        checkNonEmptyString, checkProps, checkPropType, // check
+        filter, Logger // other
+) {
     "use strict";
-    var logger = new Logger(module.id);
+    var logger = new Logger("wilton-mobile/eventListeners");
 
     var listeners = [];
 
     function add(options, callback) {
-        if (!isString(name)) {
-            throw new Error("Invalid non-string 'name' specified, value: [" + name + "]");
+        checkProps(options, ["name", "event", "func"]);
+        checkPropType(options, "name", "string");
+        checkPropType(options, "event", "string");
+        checkPropType(options, "func", "function");
+        try {
+            listeners.push({
+                name: options.name,
+                event: options.event,
+                func: options.func
+            });
+            return callOrIgnore(callback);
+        } catch (e) {
+            return callOrThrow(callback, e);
         }
-        if (!isString)
     }
 
-    function remove(name) {
-        delete listeners[name];
+    function remove(name, callback) {
+        checkNonEmptyString("name", name);
+        try {
+            var indices = [];
+            listeners.forEach(function(li, idx) {
+                if (name === li.name) {
+                    indices.push(idx);
+                }
+            });
+            indices.forEach(function(idx) {
+                listeners.splice(idx, 1);
+            });
+            return callOrIgnore(callback);
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
     }
 
-    function fireEvent(event) {
-        listeners[event]();
+    function fireEvent(event, callback) {
+        checkNonEmptyString("event", event);
+        logger.info("Event fired, name: [" + event + "]");
+        try {
+            var filtered = filter(listeners, function(li) {
+                return event === li.event;
+            });
+            filtered.forEach(function(li) {
+                try {
+                    li.func();
+                } catch (e) {
+                    logger.error("Event listener error," +
+                            " event: [" + event + "]," +
+                            " name: [" + li.name + "]", e);
+                }
+            });
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
     }
 
     return {

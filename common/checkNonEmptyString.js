@@ -18,16 +18,9 @@ define([
 ], function() {
     "use strict";
 
-    return function(list, fun) {
-        if (!(list instanceof Array)) throw new Error("Specified collection is not an Array");
-        if (!("function" === typeof(fun))) throw new Error("Specified callback is not a Function");
- 
-        var res = [];
-        for (var i = 0; i < list.length; i++) {
-            res.push(fun(list[i], i));
+    return function(name, str) {
+        if (!("string" === typeof(str) && str.length > 0)) {
+            throw new Error("Invalid '" + name + "' spacified, value: [" + str + "]");
         }
-
-        return res;
     };
-
 });
