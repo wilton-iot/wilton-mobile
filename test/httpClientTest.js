@@ -15,17 +15,16 @@
  */
 
 define([
-    "wilton-mobile/common/defaultObject",
-    "../support/assert"
-], function(defaultObject, assert) {
+    "wilton-mobile/httpClient",
+    "./support/assert"
+], function(httpClient, assert) {
     "use strict";
 
-    print("test: common/defaultObject");
+    print("test: httpClient");
 
-    assert.equal(defaultObject(), {});
-    assert.equal(defaultObject(null), {});
-    assert.equal(defaultObject(0), {});
-    assert.equal(defaultObject("foo"), {});
-    assert.equal(defaultObject({foo: 42}), {foo: 42});
+    // sanity, tested in ServerTest
 
+    assert.equal(typeof(httpClient), "object");
+    assert.equal(typeof(httpClient.sendRequest), "function");
+    assert.equal(typeof(httpClient.sendFile), "function");
 });

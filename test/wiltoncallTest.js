@@ -15,17 +15,14 @@
  */
 
 define([
-    "wilton-mobile/common/defaultObject",
-    "../support/assert"
-], function(defaultObject, assert) {
+    "wilton-mobile/wiltoncall",
+    "./support/assert"
+], function(wiltoncall, assert) {
     "use strict";
 
-    print("test: common/defaultObject");
+    print("test: wiltoncall");
 
-    assert.equal(defaultObject(), {});
-    assert.equal(defaultObject(null), {});
-    assert.equal(defaultObject(0), {});
-    assert.equal(defaultObject("foo"), {});
-    assert.equal(defaultObject({foo: 42}), {foo: 42});
+    // sanity
 
+    assert.equal(typeof(wiltoncall), "function");
 });

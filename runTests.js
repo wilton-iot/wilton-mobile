@@ -29,12 +29,16 @@ define([
 
     // api
     "wilton-mobile/test/eventListenersTest",
-    "wilton-mobile/test/LoggerTest"
+    "wilton-mobile/test/fsTest",
+    "wilton-mobile/test/httpClientTest",
+    "wilton-mobile/test/LoggerTest",
+    "wilton-mobile/test/ServerTest",
+    "wilton-mobile/test/wiltoncallTest"
 
 ], function() {
     return {
         main: function() {
-            print("test: passed");
+            print("test: PASSED");
         }
     };
 });

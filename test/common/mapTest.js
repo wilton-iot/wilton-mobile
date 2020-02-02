@@ -15,9 +15,9 @@
  */
 
 define([
-    "wilton-mobile/test/assert",
-    "wilton-mobile/common/map"
-], function(assert, map) {
+    "wilton-mobile/common/map",
+    "../support/assert"
+], function(map, assert) {
     "use strict";
 
     print("test: common/map");

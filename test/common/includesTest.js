@@ -15,9 +15,9 @@
  */
 
 define([
-    "wilton-mobile/test/assert",
-    "wilton-mobile/common/includes"
-], function(assert, includes) {
+    "wilton-mobile/common/includes",
+    "../support/assert"
+], function(includes, assert) {
     "use strict";
 
     print("test: common/includes");

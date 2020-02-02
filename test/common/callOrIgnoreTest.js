@@ -15,9 +15,9 @@
  */
 
 define([
-    "wilton-mobile/test/assert",
-    "wilton-mobile/common/callOrIgnore"
-], function(assert, callOrIgnore) {
+    "wilton-mobile/common/callOrIgnore",
+    "../support/assert"
+], function(callOrIgnore, assert) {
     "use strict";
 
     print("test: common/callOrIgnore");

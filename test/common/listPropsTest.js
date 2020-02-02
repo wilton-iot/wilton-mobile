@@ -15,9 +15,9 @@
  */
 
 define([
-    "wilton-mobile/test/assert",
-    "wilton-mobile/common/listProps"
-], function(assert, listProps) {
+    "wilton-mobile/common/listProps",
+    "../support/assert"
+], function(listProps, assert) {
     "use strict";
 
     print("test: common/listProps");

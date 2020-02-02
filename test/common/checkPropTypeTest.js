@@ -15,9 +15,9 @@
  */
 
 define([
-    "wilton-mobile/test/assert",
-    "wilton-mobile/common/checkPropType"
-], function(assert, checkPropType) {
+    "wilton-mobile/common/checkPropType",
+    "../support/assert"
+], function(checkPropType, assert) {
     "use strict";
 
     print("test: common/checkPropType");

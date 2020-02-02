@@ -15,13 +15,13 @@
  */
 
 define([
-    "wilton-mobile/test/assert",
     "wilton-mobile/eventListeners",
-    "wilton-mobile/Logger"
-], function(assert, eventListeners, Logger) {
+    "wilton-mobile/Logger",
+    "./support/assert"
+], function(eventListeners, Logger, assert) {
     "use strict";
 
-    print("test: common/eventListeners");
+    print("test: eventListeners");
     Logger.disableLabel("wilton-mobile/eventListeners");
 
     // validation

@@ -15,17 +15,15 @@
  */
 
 define([
-    "wilton-mobile/common/defaultObject",
-    "../support/assert"
-], function(defaultObject, assert) {
+    "wilton-mobile/fs",
+    "./testDir"
+], function(fs, testDir) {
     "use strict";
 
-    print("test: common/defaultObject");
-
-    assert.equal(defaultObject(), {});
-    assert.equal(defaultObject(null), {});
-    assert.equal(defaultObject(0), {});
-    assert.equal(defaultObject("foo"), {});
-    assert.equal(defaultObject({foo: 42}), {foo: 42});
-
+    var scratch = testDir + "scratch/";
+    if (fs.exists(scratch)) {
+        fs.rmdir(scratch);
+    }
+    fs.mkdir(scratch);
+    return scratch;
 });

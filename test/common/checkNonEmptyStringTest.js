@@ -15,9 +15,9 @@
  */
 
 define([
-    "wilton-mobile/test/assert",
-    "wilton-mobile/common/checkNonEmptyString"
-], function(assert, checkNonEmptyString) {
+    "wilton-mobile/common/checkNonEmptyString",
+    "../support/assert"
+], function(checkNonEmptyString, assert) {
     "use strict";
 
     print("test: common/checkNonEmptyString");

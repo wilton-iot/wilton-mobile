@@ -15,9 +15,9 @@
  */
 
 define([
-    "wilton-mobile/test/assert",
-    "wilton-mobile/common/filter"
-], function(assert, filter) {
+    "wilton-mobile/common/filter",
+    "../support/assert"
+], function(filter, assert) {
     "use strict";
 
     print("test: common/filter");

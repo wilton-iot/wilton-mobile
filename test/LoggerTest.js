@@ -15,12 +15,12 @@
  */
 
 define([
-    "wilton-mobile/test/assert",
-    "wilton-mobile/Logger"
-], function(assert, Logger) {
+    "wilton-mobile/Logger",
+    "./support/assert"
+], function(Logger, assert) {
     "use strict";
 
-    print("test: common/Logger");
+    print("test: Logger");
 
     // validation
 

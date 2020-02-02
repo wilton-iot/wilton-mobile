@@ -15,17 +15,33 @@
  */
 
 define([
-    "wilton-mobile/common/defaultObject",
-    "../support/assert"
-], function(defaultObject, assert) {
+    "wilton-mobile/fs",
+    "./support/assert",
+    "./support/scratchDir"
+], function(fs, assert, scratchDir) {
     "use strict";
 
-    print("test: common/defaultObject");
+    print("test: fs");
 
-    assert.equal(defaultObject(), {});
-    assert.equal(defaultObject(null), {});
-    assert.equal(defaultObject(0), {});
-    assert.equal(defaultObject("foo"), {});
-    assert.equal(defaultObject({foo: 42}), {foo: 42});
+    // prepare
+
+    var dir = scratchDir + "fsTest/";
+    assert(!fs.exists(dir));
+    fs.mkdir(dir);
+    assert(fs.exists(dir));
+
+    // write file
+
+    var foo = dir + "foo.txt";
+    var bar = dir + "bar.txt";
+    fs.writeFile(foo, "foo42");
+    assert.equal(fs.readFile(foo), "foo42");
+    fs.writeFile(bar, "bar43");
+    assert.equal(fs.readFile(bar), "bar43");
+
+    // list dir
+    var list = fs.readdir(dir);
+    list.sort();
+    assert.equal(list, ["bar.txt", "foo.txt"]);
 
 });

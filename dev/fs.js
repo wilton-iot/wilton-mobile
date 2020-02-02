@@ -15,17 +15,9 @@
  */
 
 define([
-    "wilton-mobile/common/defaultObject",
-    "../support/assert"
-], function(defaultObject, assert) {
+    "wilton/fs"
+], function(fs) {
     "use strict";
 
-    print("test: common/defaultObject");
-
-    assert.equal(defaultObject(), {});
-    assert.equal(defaultObject(null), {});
-    assert.equal(defaultObject(0), {});
-    assert.equal(defaultObject("foo"), {});
-    assert.equal(defaultObject({foo: 42}), {foo: 42});
-
+    return fs;
 });

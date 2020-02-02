@@ -20,7 +20,7 @@ define([
 
     return function(obj) {
         var res = {};
-        if ("object" === typeof (obj) && null !== obj) {
+        if ("object" === typeof(obj) && null !== obj) {
             res = obj;
         }
         return res;
