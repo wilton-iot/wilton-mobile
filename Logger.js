@@ -15,10 +15,68 @@
  */
 
 define([
-    "module",
-    "./common/requirePlatform"
 ], function(module, requirePlatform) {
     "use strict";
 
-    return requirePlatform(module.id);
+    var disabled = {};
+    var maxLabelLen = 20;
+
+    function Logger(label, printer) {
+        if ("string" !== typeof(label) || 0 === label.length) {
+            throw new Error("Invalid 'label' specified, value: [" + label + "]");
+        }
+
+        this.label = label.length < 20 ? label : label.substring(label.length - maxLabelLen);
+        if ("undefined" === typeof(printer)) {
+            this.printer = null;
+        } else if ("function" === typeof(printer)) {
+            this.printer = printer;
+        } else {
+            throw new Error("Invalid 'printer' specified, value: [" + printer + "]");
+        }
+    }
+
+    Logger.prototype = {
+        log: function(level, msg) {
+            if (true === disabled[this.label]) {
+                return;
+            }
+            var str = "[" + level + " " + this.label + "] " + String(msg);
+            if (null === this.printer) {
+                print(str);
+            } else {
+                this.printer(str);
+            }
+        },
+
+        info: function(msg) {
+            this.log("info", msg);
+        },
+
+        warn: function(msg) {
+            this.log("WARN", msg);
+        },
+
+        error: function(msg, e) {
+            var message = msg;
+            if ("undefined" !== typeof(e) &&
+                    "undefined" !== typeof(e.message) &&
+                    "undefined" !== typeof(e.stack)) {
+                message += "\n";
+                message += e.message;
+                message += "\n";
+                message += e.stack;
+            }
+            this.log("ERROR", message);
+        }
+    };
+
+    Logger.disableLabel = function(label) {
+        if ("string" !== typeof(label) || 0 === label.length) {
+            throw new Error("Invalid 'label' specified, value: [" + label + "]");
+        }
+        disabled[label] = true;
+    };
+
+    return Logger;
 });

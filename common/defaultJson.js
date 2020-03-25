@@ -15,10 +15,19 @@
  */
 
 define([
-    "module",
-    "./common/requirePlatform"
-], function(module, requirePlatform) {
+    "./isNil"
+], function(isNil) {
     "use strict";
 
-    return requirePlatform(module.id);
+    return function(data) {
+        var json = "{}";
+        if (!isNil(data)) {
+            if ("string" === typeof (data)) {
+                json = data;
+            } else {
+                json = JSON.stringify(data, null, 4);
+            }
+        }
+        return json;
+    };
 });

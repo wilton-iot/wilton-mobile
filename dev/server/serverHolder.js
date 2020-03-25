@@ -18,19 +18,18 @@ define([
 ], function() {
     "use strict";
 
-    function Logger() {
-        
-    }
+    var server = null;
 
-    Logger.prototype = {
-        info() {
-            
+    return {
+        get: function() {
+            return server;
         },
 
-        error() {
-            
+        put: function(instance) {
+            if (null !== server) {
+                throw new Error("Server is already running");
+            }
+            server = instance;
         }
     };
-
-    return Logger;
 });

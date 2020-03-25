@@ -15,9 +15,17 @@
  */
 
 define([
-    "wilton/wiltoncall"
-], function(wiltoncall) {
+    "../isDev"
+], function(isDev) {
     "use strict";
 
-    return wiltoncall;
+    return function(name) {
+        if (isDev) {
+            require(["wilton/dyload"], function(dyload) {
+                dyload({
+                    name: name
+                });
+            });
+        }
+    };
 });

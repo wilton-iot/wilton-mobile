@@ -15,11 +15,17 @@
  */
 
 define([
-], function() {
+    "./isNil"
+], function(isNil) {
     "use strict";
 
-    return {
-        sendRequest: sendRequest,
-        sendFile: sendFile
+    return function(str) {
+        if ("string" === typeof (str)) {
+            return str;
+        } else if (!isNil(str)) {
+            return String(str);
+        } else {
+            return "";
+        }
     };
 });

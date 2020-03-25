@@ -22,12 +22,11 @@ define([
         if ("function" === typeof(onFailure)) {
             return onFailure(e);
         } else {
-            if (e instanceof Error) {
-                throw e;
-            } else if ("object" === typeof(e) && 
+            if (e instanceof Error ||
+                    ("object" === typeof(e) && 
                     "string" === typeof(e.message) &&
-                    "string" === typeof(e.stack)) {
-                throw new Error(e.message);
+                    "string" === typeof(e.stack))) {
+                throw new Error(e.message + "\n" + e.stack);
             } else {
                 throw new Error(String(e));
             }

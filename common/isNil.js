@@ -18,9 +18,9 @@ define([
 ], function() {
     "use strict";
 
-    function wiltoncall() {
+    return function(obj) {
+        return "undefined" === typeof(obj) || null === obj;
+    };
 
-    }
-
-    return wiltoncall;
 });
+

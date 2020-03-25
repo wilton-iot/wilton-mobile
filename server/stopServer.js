@@ -15,9 +15,30 @@
  */
 
 define([
-    "wilton/fs"
-], function(fs) {
+    // common
+    "../common/callOrIgnore",
+    "../common/callOrThrow",
+    // local
+    "../isDev",
+    "../wiltoncall"
+], function(
+        callOrIgnore, callOrThrow, // common
+        isDev, wiltoncall // local
+) {
     "use strict";
 
-    return fs;
+    return function(callback) {
+        try {
+            if(isDev) {
+                require(["wilton-mobile/dev/server/stopServer"], function(stopServer) {
+                    stopServer();
+                });
+            } else {
+                wiltoncall("server_stop");
+            }
+            return callOrIgnore(callback);
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
+    };
 });

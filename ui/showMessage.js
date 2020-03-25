@@ -15,9 +15,19 @@
  */
 
 define([
-    "wilton/httpClient"
-], function(httpClient) {
+    "../common/callOrIgnore",
+    "../common/callOrThrow",
+    "../common/defaultString",
+    "../wiltoncall"
+], function(callOrIgnore, callOrThrow, defaultString, wiltoncall) {
     "use strict";
 
-    return httpClient;
+    return function(message, callback) {
+        try {
+            wiltoncall("ui_show_message", defaultString(message));
+            return callOrIgnore(callback);
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
+    };
 });

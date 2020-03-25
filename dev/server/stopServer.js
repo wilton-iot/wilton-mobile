@@ -15,28 +15,15 @@
  */
 
 define([
-    "../isAndroid",
-    "../isIOS"
-], function(isAndroid, isIOS) {
+    "./serverHolder"
+], function(holder) {
     "use strict";
 
-    function requireSync(modname) {
-        var res = null;
-        // requires is always sync on backend
-        require([modname], function(mod) {
-            res = mod;
-        });
-        return res;
-    }
-
-    return function(modid) {
-        var modname = modid.replace(/^.*\//g, "");
-        if (isAndroid) {
-            return requireSync("wilton-mobile/android/" + modname);
-        } else if (isIOS) {
-            return requireSync("wilton-mobile/ios/" + modname);
-        } else {
-            return requireSync("wilton-mobile/dev/" + modname);
+    return function() {
+        var server = holder.get();
+        if (null !== server) {
+            server.stop();
+            holder.put(null);
         }
     };
 });

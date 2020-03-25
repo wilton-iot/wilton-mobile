@@ -16,9 +16,28 @@
 
 define([
     "module",
-    "./common/requirePlatform"
-], function(module, requirePlatform) {
+    "./common/defaultJson",
+    "./common/includes",
+    "./isDev",
+    "./Logger"
+], function(module, defaultJson, includes, isDev, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return requirePlatform(module.id);
+    function wiltoncall(name, data) {
+        if ("string" !== typeof (name) || !(name.length > 0)) {
+            throw new Error("Invalid 'wiltoncall' parameters specified, name: [" + name + "]");
+        }
+        if (isDev) {
+            var registered = JSON.parse(WILTON_wiltoncall("wiltoncall_list_registered", "{}"));
+            if (!includes(registered, name)) {
+                logger.warn("Ignoring unsupported call, name: [" + name + "]");
+                return "{}";
+            }
+        }
+        var json = defaultJson(data);
+        return WILTON_wiltoncall(name, json);
+    }
+
+    return wiltoncall;
 });

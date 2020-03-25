@@ -47,16 +47,13 @@ define([
 
 
     server = new Server({
+        hostname: "127.0.0.1",
         tcpPort: 8080,
-        documentRoots: [{
-            resource: "/droot1",
-            dirPath: testDir + "data/docroot1",
+        documentRoot: {
+            resource: "/droot",
+            dirPath: testDir + "data/docroot",
             mimeTypes: {}
-        }, {
-            resource: "/droot2",
-            dirPath: testDir + "data/docroot2",
-            mimeTypes: {}
-        }]
+        }
     });
 
     var resp1 = httpClient.sendRequest("http://127.0.0.1:8080/droot1/foo.txt");

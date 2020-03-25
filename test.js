@@ -16,24 +16,24 @@
 
 define([
     // common
-    "wilton-mobile/test/common/callOrIgnoreTest",
-    "wilton-mobile/test/common/callOrThrowTest",
-    "wilton-mobile/test/common/checkNonEmptyStringTest",
-    "wilton-mobile/test/common/checkPropTypeTest",
-    "wilton-mobile/test/common/checkPropsTest",
-    "wilton-mobile/test/common/defaultObjectTest",
-    "wilton-mobile/test/common/filterTest",
-    "wilton-mobile/test/common/includesTest",
-    "wilton-mobile/test/common/listPropsTest",
-    "wilton-mobile/test/common/mapTest",
+    "./test/common/callOrIgnoreTest",
+    "./test/common/callOrThrowTest",
+    "./test/common/checkNonEmptyStringTest",
+    "./test/common/checkPropTypeTest",
+    "./test/common/checkPropsTest",
+    "./test/common/defaultObjectTest",
+    "./test/common/filterTest",
+    "./test/common/includesTest",
+    "./test/common/listPropsTest",
+    "./test/common/mapTest",
 
     // api
-    "wilton-mobile/test/eventListenersTest",
-    "wilton-mobile/test/fsTest",
-    "wilton-mobile/test/httpClientTest",
-    "wilton-mobile/test/LoggerTest",
-    "wilton-mobile/test/ServerTest",
-    "wilton-mobile/test/wiltoncallTest"
+    "./test/eventListenersTest",
+    "./test/fsTest",
+    "./test/httpClientTest",
+    "./test/LoggerTest",
+    "./test/ServerTest",
+    "./test/wiltoncallTest"
 
 ], function() {
     return {

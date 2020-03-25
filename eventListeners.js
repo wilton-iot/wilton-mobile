@@ -15,10 +15,85 @@
  */
 
 define([
-    "module",
-    "./common/requirePlatform"
-], function(module, requirePlatform) {
+    // call
+    "./common/callOrIgnore",
+    "./common/callOrThrow",
+    // check
+    "./common/checkNonEmptyString",
+    "./common/checkProps",
+    "./common/checkPropType",
+    // other
+    "./common/filter",
+    "./Logger"
+], function(
+        callOrIgnore, callOrThrow, // call
+        checkNonEmptyString, checkProps, checkPropType, // check
+        filter, Logger // other
+) {
     "use strict";
+    var logger = new Logger("wilton-mobile/eventListeners");
 
-    return requirePlatform(module.id);
+    var listeners = [];
+
+    function add(options, callback) {
+        checkProps(options, ["name", "event", "func"]);
+        checkPropType(options, "name", "string");
+        checkPropType(options, "event", "string");
+        checkPropType(options, "func", "function");
+        try {
+            listeners.push({
+                name: options.name,
+                event: options.event,
+                func: options.func
+            });
+            return callOrIgnore(callback);
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
+    }
+
+    function remove(name, callback) {
+        checkNonEmptyString("name", name);
+        try {
+            var indices = [];
+            listeners.forEach(function(li, idx) {
+                if (name === li.name) {
+                    indices.push(idx);
+                }
+            });
+            indices.forEach(function(idx) {
+                listeners.splice(idx, 1);
+            });
+            return callOrIgnore(callback);
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
+    }
+
+    function fireEvent(event, callback) {
+        checkNonEmptyString("event", event);
+        logger.info("Event fired, name: [" + event + "]");
+        try {
+            var filtered = filter(listeners, function(li) {
+                return event === li.event;
+            });
+            filtered.forEach(function(li) {
+                try {
+                    li.func();
+                } catch (e) {
+                    logger.error("Event listener error," +
+                            " event: [" + event + "]," +
+                            " name: [" + li.name + "]", e);
+                }
+            });
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
+    }
+
+    return {
+        add: add,
+        remove: remove,
+        fireEvent: fireEvent
+    };
 });

@@ -15,22 +15,10 @@
  */
 
 define([
-], function() {
+    "./isAndroid",
+    "./isIOS"
+], function(isAndroid, isIOS) {
     "use strict";
 
-    function Server() {
-        
-    }
-
-    Server.prototype = {
-        start() {
-            
-        },
-
-        stop() {
-            
-        }
-    };
-
-    return Server;
+    return !(isAndroid || isIOS);
 });

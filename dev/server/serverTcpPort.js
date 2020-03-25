@@ -15,8 +15,15 @@
  */
 
 define([
-], function() {
+    "./serverHolder"
+], function(holder) {
     "use strict";
 
-    return true === WILTONMOBILE_isIOS;
+    return function() {
+        var server = holder.get();
+        if (null === server) {
+            throw new Error("Server is not running");
+        }
+        return server.getTcpPort();
+    };
 });
