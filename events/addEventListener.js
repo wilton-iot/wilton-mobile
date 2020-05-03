@@ -15,32 +15,40 @@
  */
 
 define([
-    "../isDev",
-    "../wiltoncall",
+    "module",
+    // call
     "../common/callOrIgnore",
     "../common/callOrThrow",
-    "../common/defaultObject",
-    "./_fsFun"
-], function(isDev, wiltoncall, callOrIgnore, callOrThrow, defaultObject, fsFun) {
+    // check
+    "../common/checkProps",
+    "../common/checkPropType",
+    // other
+    "../Logger",
+    "./_listeners"
+], function(
+        module,
+        callOrIgnore, callOrThrow, // call
+        checkProps, checkPropType, // check
+        Logger, listeners // other
+) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    if (isDev) {
-        return fsFun("readFile");
-    }
-
-    return function(path, options, callback) {
-        if ("undefined" === typeof (callback)) {
-            callback = options;
-        }
-        var opts = defaultObject(options);
+    return function(options, callback) {
+        checkProps(options, ["name", "event", "func"]);
+        checkPropType(options, "name", "string");
+        checkPropType(options, "event", "string");
+        checkPropType(options, "func", "function");
         try {
-            var res = wiltoncall("fs_read_file", {
-                path: path,
-                hex: true === opts.hex
+            listeners.push({
+                name: options.name,
+                event: options.event,
+                func: options.func
             });
-            return callOrIgnore(callback, res);
+            return callOrIgnore(callback);
         } catch (e) {
             return callOrThrow(callback, e);
         }
     };
+
 });

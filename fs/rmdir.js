@@ -15,9 +15,26 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../isDev",
+    "../wiltoncall",
+    "../common/callOrIgnore",
+    "../common/callOrThrow",
+    "./_fsFun"
+], function(isDev, wiltoncall, callOrIgnore, callOrThrow, fsFun) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    if (isDev) {
+        return fsFun("rmdir");
+    }
+
+    return function(path, callback) {
+        try {
+            wiltoncall("fs_rmdir", {
+                path: path
+            });
+            return callOrIgnore(callback);
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
+    };
 });

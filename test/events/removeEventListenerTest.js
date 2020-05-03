@@ -15,9 +15,21 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../../events/addEventListener",
+    "../../events/removeEventListener",
+    "../../Logger",
+    "../support/assert"
+], function(addEventListener, removeEventListener, Logger, assert) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    print("test: events/removeEventListener");
+    Logger.disableLabel("wilton-mobile/events/removeEventListener");
+
+    assert.throws(function() { removeEventListener(null); });
+    addEventListener({
+        name: "foo",
+        event: "bar",
+        func: function(num) {}
+    });
+    removeEventListener("foo");
 });

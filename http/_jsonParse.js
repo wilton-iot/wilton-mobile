@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
+
 define([
-    "module"
-], function(module) {
+    "../common/callOrIgnore",
+    "../common/callOrThrow"
+], function(callOrIgnore, callOrThrow) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    return function(callback) {
+        try {
+            if (null === this.jsonCached) {
+                var json = this.data;
+                this.jsonCached = JSON.parse(json);
+            }
+            return callOrIgnore(callback, this.jsonCached);
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
+    };
 });

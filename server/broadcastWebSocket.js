@@ -15,30 +15,32 @@
  */
 
 define([
-    "../isDev",
-    "../wiltoncall",
+    // common
     "../common/callOrIgnore",
     "../common/callOrThrow",
-    "../common/defaultObject",
-    "./_fsFun"
-], function(isDev, wiltoncall, callOrIgnore, callOrThrow, defaultObject, fsFun) {
+    "../common/defaultJson",
+    // local
+    "../isDev",
+    "../wiltoncall"
+], function(
+        callOrIgnore, callOrThrow, defaultJson, // common
+        isDev, wiltoncall // local
+) {
     "use strict";
 
-    if (isDev) {
-        return fsFun("readFile");
-    }
-
-    return function(path, options, callback) {
-        if ("undefined" === typeof (callback)) {
-            callback = options;
-        }
-        var opts = defaultObject(options);
+    return function(message, callback) {
         try {
-            var res = wiltoncall("fs_read_file", {
-                path: path,
-                hex: true === opts.hex
-            });
-            return callOrIgnore(callback, res);
+            if(isDev) {
+                require(["wilton-mobile/dev/server/broadcastWebSocket"], function(broadcastWebSocket) {
+                    broadcastWebSocket({
+                        path: "/websocket",
+                        message: defaultJson(message)
+                    });
+                });
+            } else {
+                wiltoncall("server_broadcast_web_socket", defaultJson(message));
+            }
+            return callOrIgnore(callback);
         } catch (e) {
             return callOrThrow(callback, e);
         }

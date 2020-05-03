@@ -15,7 +15,7 @@
  */
 
 define([
-    "wilton-mobile/Logger",
+    "../Logger",
     "./support/assert"
 ], function(Logger, assert) {
     "use strict";

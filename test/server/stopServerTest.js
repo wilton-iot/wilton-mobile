@@ -15,9 +15,22 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../../server/startServer",
+    "../../server/stopServer",
+    "../support/assert"
+], function(startServer, stopServer, assert) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    print("test: server/stopServer");
+
+    startServer({
+        tcpPort: 0
+    });
+    stopServer();
+    startServer({
+        tcpPort: 0
+    });
+    stopServer();
+    stopServer();
+
 });

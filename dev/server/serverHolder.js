@@ -26,7 +26,7 @@ define([
         },
 
         put: function(instance) {
-            if (null !== server) {
+            if (null !== instance && null !== server) {
                 throw new Error("Server is already running");
             }
             server = instance;

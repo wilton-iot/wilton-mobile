@@ -15,30 +15,68 @@
  */
 
 define([
-    // common
-    "./test/common/callOrIgnoreTest",
-    "./test/common/callOrThrowTest",
-    "./test/common/checkNonEmptyStringTest",
-    "./test/common/checkPropTypeTest",
-    "./test/common/checkPropsTest",
-    "./test/common/defaultObjectTest",
-    "./test/common/filterTest",
-    "./test/common/includesTest",
-    "./test/common/listPropsTest",
-    "./test/common/mapTest",
+    "./isDev",
+    "./dev/createChannels"
+], function(isDev, createChannels) {
 
-    // api
-    "./test/eventListenersTest",
-    "./test/fsTest",
-    "./test/httpClientTest",
-    "./test/LoggerTest",
-    "./test/ServerTest",
-    "./test/wiltoncallTest"
+    if(isDev) {
+        createChannels();
+        require(["wilton/thread"], function(thread) {
+            thread.run({
+                callbackScript: {
+                    module: "wilton-mobile/dev/jsWorkerLoop"
+                }
+            });
+        });
+    }
 
-], function() {
+    require([
+        // common
+        "wilton-mobile/test/common/callOrIgnoreTest",
+        "wilton-mobile/test/common/callOrThrowTest",
+        "wilton-mobile/test/common/checkNonEmptyStringTest",
+        "wilton-mobile/test/common/checkPropTypeTest",
+        "wilton-mobile/test/common/checkPropsTest",
+        "wilton-mobile/test/common/defaultObjectTest",
+        "wilton-mobile/test/common/filterTest",
+        "wilton-mobile/test/common/includesTest",
+        "wilton-mobile/test/common/listPropsTest",
+        "wilton-mobile/test/common/mapTest",
+
+        // events
+        "wilton-mobile/test/events/addEventListenerTest",
+        "wilton-mobile/test/events/fireEventTest",
+        "wilton-mobile/test/events/removeEventListenerTest",
+
+        // fs
+        "wilton-mobile/test/fs/existsTest",
+        "wilton-mobile/test/fs/mkdirTest",
+        "wilton-mobile/test/fs/readFileTest",
+        "wilton-mobile/test/fs/readdirTest",
+        "wilton-mobile/test/fs/rmdirTest",
+        "wilton-mobile/test/fs/unlinkTest",
+        "wilton-mobile/test/fs/writeFileTest",
+
+        // http
+        "wilton-mobile/test/http/sendFileTest",
+        "wilton-mobile/test/http/sendRequestTest",
+
+        // server
+        "wilton-mobile/test/server/broadcastWebSocketTest",
+        "wilton-mobile/test/server/serverTcpPortTest",
+        "wilton-mobile/test/server/startServerTest",
+        "wilton-mobile/test/server/stopServerTest",
+
+        // other
+        "wilton-mobile/test/compatTest",
+        "wilton-mobile/test/LoggerTest",
+        "wilton-mobile/test/wiltoncallTest"
+    ], function() {
+        print("test: PASSED");
+    });
+
     return {
         main: function() {
-            print("test: PASSED");
         }
     };
 });

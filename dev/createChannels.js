@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2020, alex at staticlibs.net
  *
@@ -15,9 +16,18 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "module",
+    "../Logger"
+], function(module, Logger) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    return function() {
+        require(["wilton/Channel"], function(Channel) {
+            new Channel("dev/tasks/queue", 0);
+            new Channel("dev/results/queue", 0);
+            new Channel("dev/server/conf", 1);
+        });
+    };
+
 });

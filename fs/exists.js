@@ -15,9 +15,27 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../isDev",
+    "../wiltoncall",
+    "../common/callOrIgnore",
+    "../common/callOrThrow",
+    "./_fsFun"
+], function(isDev, wiltoncall, callOrIgnore, callOrThrow, fsFun) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    if (isDev) {
+        return fsFun("exists");
+    }
+
+    return function(path, callback) {
+        try {
+            var resstr = wiltoncall("fs_exists", {
+                path: path
+            });
+            var res = JSON.parse(resstr).exists;
+            return callOrIgnore(callback, res);
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
+    };
 });

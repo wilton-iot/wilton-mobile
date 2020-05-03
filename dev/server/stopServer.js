@@ -15,15 +15,22 @@
  */
 
 define([
+    "wilton/Channel",
     "./serverHolder"
-], function(holder) {
+], function(Channel, holder) {
     "use strict";
+
+    var sconfChan = Channel.lookup("dev/server/conf");
 
     return function() {
         var server = holder.get();
         if (null !== server) {
             server.stop();
             holder.put(null);
+            var sconf = sconfChan.poll();
+            if (null === sconf) {
+                throw new Error("Server config channel invalid state");
+            }
         }
     };
 });

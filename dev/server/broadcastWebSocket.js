@@ -15,9 +15,15 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "./serverHolder"
+], function(holder) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    return function(opts) {
+        var server = holder.get();
+        if (null === server) {
+            throw new Error("Server is not running");
+        }
+        return server.broadcastWebSocket(opts);
+    };
 });

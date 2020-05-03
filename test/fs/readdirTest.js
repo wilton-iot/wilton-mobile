@@ -15,9 +15,19 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../../common/includes",
+    "../../fs/readdir",
+    "../support/assert",
+    "../support/testDir"
+], function(includes, readdir, assert, testDir) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    print("test: fs/readdir");
+
+    var list = readdir(testDir + "data/docroot1");
+    assert(list instanceof Array);
+    assert.equal(2, list.length);
+    assert(includes(list, "foo.txt"));
+    assert(includes(list, "bar.txt"));
+
 });

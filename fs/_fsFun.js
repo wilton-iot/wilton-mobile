@@ -15,9 +15,14 @@
  */
 
 define([
-    "module"
-], function(module) {
+], function() {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    return function(name) {
+        var fs = null;
+        require(["wilton/fs"], function(mod) {
+            fs = mod;
+        });
+        return fs[name];
+    };
 });

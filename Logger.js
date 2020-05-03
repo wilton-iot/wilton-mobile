@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-define([
-], function(module, requirePlatform) {
+define([], function() {
     "use strict";
 
     var disabled = {};
@@ -26,7 +25,7 @@ define([
             throw new Error("Invalid 'label' specified, value: [" + label + "]");
         }
 
-        this.label = label.length < 20 ? label : label.substring(label.length - maxLabelLen);
+        this.label = label;
         if ("undefined" === typeof(printer)) {
             this.printer = null;
         } else if ("function" === typeof(printer)) {
@@ -41,7 +40,9 @@ define([
             if (true === disabled[this.label]) {
                 return;
             }
-            var str = "[" + level + " " + this.label + "] " + String(msg);
+            var label = this.label.length < 20 ? this.label :
+                    this.label.substring(this.label.length - maxLabelLen);
+            var str = "[" + level + " " + label + "] " + String(msg);
             if (null === this.printer) {
                 print(str);
             } else {

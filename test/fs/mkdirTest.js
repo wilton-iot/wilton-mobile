@@ -15,33 +15,20 @@
  */
 
 define([
-    "wilton-mobile/fs",
-    "./support/assert",
-    "./support/scratchDir"
-], function(fs, assert, scratchDir) {
+    "../../fs/exists",
+    "../../fs/mkdir",
+    "../support/assert",
+    "../support/scratchDir"
+], function(exists, mkdir, assert, scratchDir) {
     "use strict";
 
-    print("test: fs");
+    print("test: fs/mkdir");
 
     // prepare
 
-    var dir = scratchDir + "fsTest/";
-    assert(!fs.exists(dir));
-    fs.mkdir(dir);
-    assert(fs.exists(dir));
-
-    // write file
-
-    var foo = dir + "foo.txt";
-    var bar = dir + "bar.txt";
-    fs.writeFile(foo, "foo42");
-    assert.equal(fs.readFile(foo), "foo42");
-    fs.writeFile(bar, "bar43");
-    assert.equal(fs.readFile(bar), "bar43");
-
-    // list dir
-    var list = fs.readdir(dir);
-    list.sort();
-    assert.equal(list, ["bar.txt", "foo.txt"]);
+    var dir = scratchDir + "mkdirTest";
+    assert(!exists(dir));
+    mkdir(dir);
+    assert(exists(dir));
 
 });

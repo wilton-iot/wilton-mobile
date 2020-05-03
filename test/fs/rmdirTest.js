@@ -15,9 +15,23 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../../fs/exists",
+    "../../fs/mkdir",
+    "../../fs/rmdir",
+    "../../fs/writeFile",
+    "../support/assert",
+    "../support/scratchDir"
+], function(exists, mkdir, rmdir, writeFile, assert, scratchDir) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    print("test: fs/rmdir");
+
+    var dir = scratchDir + "rmdirTest/";
+    mkdir(dir);
+    assert(exists(dir));
+    mkdir(dir + "dir1");
+    writeFile(dir + "dir1/foo.txt", "foo");
+    rmdir(dir);
+    assert(!exists(dir));
+
 });

@@ -20,27 +20,37 @@ define([
     "../common/callOrIgnore",
     "../common/callOrThrow",
     "../common/defaultObject",
-    "./_fsFun"
-], function(isDev, wiltoncall, callOrIgnore, callOrThrow, defaultObject, fsFun) {
+    "../common/defaultString",
+    "./_jsonParse"
+], function(isDev, wiltoncall, callOrIgnore, callOrThrow, defaultObject, defaultString, _jsonParse) {
     "use strict";
 
     if (isDev) {
-        return fsFun("readFile");
+        var http = null;
+        require(["wilton/httpClient"], function(mod) {
+            http = mod;
+        });
+        return http.sendFile;
     }
 
-    return function(path, options, callback) {
-        if ("undefined" === typeof (callback)) {
-            callback = options;
-        }
+    return function(url, options, callback) {
         var opts = defaultObject(options);
         try {
-            var res = wiltoncall("fs_read_file", {
-                path: path,
-                hex: true === opts.hex
+            var urlstr = defaultString(url);
+            var fp = defaultString(opts.filePath);
+            var meta = defaultObject(opts.meta);
+            var resp_json = wiltoncall("httpclient_send_file", {
+                url: urlstr,
+                filePath: fp,
+                metadata: meta
             });
-            return callOrIgnore(callback, res);
+            var resp = JSON.parse(resp_json);
+            resp.jsonCached = null;
+            resp.json = _jsonParse;
+            return callOrIgnore(callback, resp);
         } catch (e) {
             return callOrThrow(callback, e);
         }
     };
+
 });

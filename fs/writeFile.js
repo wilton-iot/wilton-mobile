@@ -25,20 +25,21 @@ define([
     "use strict";
 
     if (isDev) {
-        return fsFun("readFile");
+        return fsFun("writeFile");
     }
 
-    return function(path, options, callback) {
+    return function(path, data, options, callback) {
         if ("undefined" === typeof (callback)) {
             callback = options;
         }
         var opts = defaultObject(options);
         try {
-            var res = wiltoncall("fs_read_file", {
+            wiltoncall("fs_write_file", {
                 path: path,
+                data: data,
                 hex: true === opts.hex
             });
-            return callOrIgnore(callback, res);
+            return callOrIgnore(callback);
         } catch (e) {
             return callOrThrow(callback, e);
         }

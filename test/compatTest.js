@@ -15,26 +15,29 @@
  */
 
 define([
-    "wilton-mobile/common/callOrThrow",
-    "../support/assert"
-], function(callOrThrow, assert) {
+    "module",
+    "../wiltoncall",
+    "./support/assert"
+], function(module, wiltoncall, assert) {
     "use strict";
 
-    print("test: common/callOrThrow");
+    print("test: compat");
 
-    // function
-    var called = false;
-    var res = callOrThrow(function(arg1) {
-        called = true;
-        assert.equal(arg1, "foo");
-        return "bar";
-    }, "foo");
-    assert(called);
-    assert.equal(res, "bar");
+    // get_wilton_config
 
-    // error
-    assert.throws(function() {
-        callOrThrow(null, "foo");
+    var confJson = wiltoncall("get_wiltoncall_config");
+    assert.equal(typeof(confJson), "string");
+    var conf = JSON.parse(confJson);
+    assert.equal(typeof(conf), "object");
+    assert.equal(typeof(conf.requireJs), "object");
+
+    // load_module_resource
+
+    var loaded = wiltoncall("load_module_resource", {
+        url: module.uri
     });
 
+    assert.equal(typeof(loaded), "string");
+    assert(loaded.length > 0);
+    assert(loaded.indexOf('print("test: compat");') > 0);
 });

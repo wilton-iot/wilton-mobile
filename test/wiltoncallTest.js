@@ -15,7 +15,7 @@
  */
 
 define([
-    "wilton-mobile/wiltoncall",
+    "../wiltoncall",
     "./support/assert"
 ], function(wiltoncall, assert) {
     "use strict";

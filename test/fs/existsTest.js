@@ -15,9 +15,15 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../../fs/exists",
+    "../support/assert",
+    "../support/scratchDir"
+], function(exists, assert, scratchDir) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    print("test: fs/exists");
+
+    assert(exists(scratchDir));
+    assert(!exists(scratchDir + "_fail"));
+
 });

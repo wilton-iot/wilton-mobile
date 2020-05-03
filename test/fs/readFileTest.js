@@ -15,9 +15,16 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../../fs/readFile",
+    "../support/assert",
+    "../support/testDir"
+], function(readFile, assert, testDir) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    print("test: fs/readFile");
+
+    var read = readFile(testDir + "data/docroot1/foo.txt");
+    assert.equal(read, "foo");
+
 });
+

@@ -15,9 +15,24 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../../server/serverTcpPort",
+    "../../server/startServer",
+    "../../server/stopServer",
+    "../support/assert"
+], function(serverTcpPort, startServer, stopServer, assert) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    print("test: server/serverTcpPort");
+
+    startServer({
+        tcpPort: 8080
+    });
+    assert.equal(serverTcpPort(), 8080);
+    stopServer();
+    startServer({
+        tcpPort: 0
+    });
+    assert(serverTcpPort() > 0);
+    stopServer();
+
 });

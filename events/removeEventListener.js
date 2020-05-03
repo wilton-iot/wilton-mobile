@@ -15,30 +15,35 @@
  */
 
 define([
-    "../isDev",
-    "../wiltoncall",
+    "module",
+    // call
     "../common/callOrIgnore",
     "../common/callOrThrow",
-    "../common/defaultObject",
-    "./_fsFun"
-], function(isDev, wiltoncall, callOrIgnore, callOrThrow, defaultObject, fsFun) {
+    "../common/checkNonEmptyString",
+    // other
+    "../Logger",
+    "./_listeners"
+], function(
+        module,
+        callOrIgnore, callOrThrow, checkNonEmptyString, // call
+        Logger, listeners // other
+) {
     "use strict";
+    var logger = new Logger(module.id);
 
-    if (isDev) {
-        return fsFun("readFile");
-    }
-
-    return function(path, options, callback) {
-        if ("undefined" === typeof (callback)) {
-            callback = options;
-        }
-        var opts = defaultObject(options);
+    return function(name, callback) {
+        checkNonEmptyString("name", name);
         try {
-            var res = wiltoncall("fs_read_file", {
-                path: path,
-                hex: true === opts.hex
+            var indices = [];
+            listeners.forEach(function(li, idx) {
+                if (name === li.name) {
+                    indices.push(idx);
+                }
             });
-            return callOrIgnore(callback, res);
+            indices.forEach(function(idx) {
+                listeners.splice(idx, 1);
+            });
+            return callOrIgnore(callback);
         } catch (e) {
             return callOrThrow(callback, e);
         }

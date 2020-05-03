@@ -15,15 +15,17 @@
  */
 
 define([
-    "wilton-mobile/fs",
+    "../../fs/exists",
+    "../../fs/mkdir",
+    "../../fs/rmdir",
     "./testDir"
-], function(fs, testDir) {
+], function(exists, mkdir, rmdir, testDir) {
     "use strict";
 
     var scratch = testDir + "scratch/";
-    if (fs.exists(scratch)) {
-        fs.rmdir(scratch);
+    if (exists(scratch)) {
+        rmdir(scratch);
     }
-    fs.mkdir(scratch);
+    mkdir(scratch);
     return scratch;
 });

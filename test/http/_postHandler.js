@@ -15,9 +15,11 @@
  */
 
 define([
-    "module"
-], function(module) {
+], function() {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    return function(data) {
+        return data;
+    };
+
 });

@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-define([
-    "module"
-], function(module) {
+define([], function() {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    return [];
 });

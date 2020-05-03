@@ -15,16 +15,27 @@
  */
 
 define([
-    "wilton-mobile/httpClient",
-    "./support/assert"
-], function(httpClient, assert) {
+    "../isDev",
+    "../wiltoncall",
+    "../common/callOrIgnore",
+    "../common/callOrThrow",
+    "./_fsFun"
+], function(isDev, wiltoncall, callOrIgnore, callOrThrow, fsFun) {
     "use strict";
 
-    print("test: httpClient");
+    if (isDev) {
+        return fsFun("readdir");
+    }
 
-    // sanity, tested in ServerTest
-
-    assert.equal(typeof(httpClient), "object");
-    assert.equal(typeof(httpClient.sendRequest), "function");
-    assert.equal(typeof(httpClient.sendFile), "function");
+    return function(path, callback) {
+        try {
+            var res = wiltoncall("fs_readdir", {
+                path: path
+            });
+            var list = JSON.parse(res);
+            return callOrIgnore(callback, list);
+        } catch (e) {
+            return callOrThrow(callback, e);
+        }
+    };
 });

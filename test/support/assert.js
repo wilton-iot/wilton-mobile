@@ -15,7 +15,7 @@
  */
 
 define([
-    "wilton-mobile/common/listProps"
+    "../../common/listProps"
 ], function(listProps) {
     "use strict";
     

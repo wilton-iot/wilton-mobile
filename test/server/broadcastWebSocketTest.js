@@ -15,9 +15,25 @@
  */
 
 define([
-    "module"
-], function(module) {
+    "../../server/broadcastWebSocket",
+    "../../server/startServer",
+    "../../server/stopServer"
+], function(broadcastWebSocket, startServer, stopServer) {
     "use strict";
 
-    return module.uri.replace(/^file:\/\//, "").replace(/support\/testDir\.js$/, "");
+    print("test: server/broadcastWebSocket");
+
+    startServer({
+        tcpPort: 8080
+    });
+
+    broadcastWebSocket({
+        broadcast: "mytopic",
+        payload: {
+            foo: 42
+        }
+    });
+    
+    stopServer();
+
 });

@@ -15,43 +15,46 @@
  */
 
 define([
-    "wilton-mobile/eventListeners",
-    "wilton-mobile/Logger",
-    "./support/assert"
-], function(eventListeners, Logger, assert) {
+    "../../events/addEventListener",
+    "../../events/fireEvent",
+    "../../events/removeEventListener",
+    "../../Logger",
+    "../support/assert"
+], function(addEventListener, fireEvent, removeEventListener, Logger, assert) {
     "use strict";
 
-    print("test: eventListeners");
-    Logger.disableLabel("wilton-mobile/eventListeners");
+    print("test: events/removeEventListener");
+    Logger.disableLabel("wilton-mobile/events/fireEvent");
 
     // validation
 
-    assert.throws(function() { eventListeners.add(); });
-    assert.throws(function() { eventListeners.add({}); });
-    assert.throws(function() { eventListeners.add({
+    assert.throws(function() { addEventListener(); });
+    assert.throws(function() { addEventListener({}); });
+    assert.throws(function() { addEventListener({
             name: "foo",
             event: "bar",
             func: null
     }); });
-    assert.throws(function() { eventListeners.remove(null); });
-    assert.throws(function() { eventListeners.fireEvent(null); });
+    assert.throws(function() { removeEventListener(null); });
+    assert.throws(function() { fireEvent(null); });
 
     // calls
 
     var callCount = 0;
     
-    eventListeners.add({
+    addEventListener({
         name: "foo",
         event: "bar",
-        func: function() {
-            callCount += 1;
+        func: function(num) {
+            assert.equal(typeof(num), "number");
+            callCount += num;
         }
     });
-    eventListeners.fireEvent("bar");
-    eventListeners.fireEvent("baz");
+    fireEvent("bar", [1]);
+    fireEvent("baz", [1]);
     assert.equal(callCount, 1);
 
-    eventListeners.remove("foo");
-    eventListeners.fireEvent("bar");
+    removeEventListener("foo");
+    fireEvent("bar", [1]);
     assert.equal(callCount, 1);
 });
