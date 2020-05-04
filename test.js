@@ -72,6 +72,17 @@ define([
         "wilton-mobile/test/LoggerTest",
         "wilton-mobile/test/wiltoncallTest"
     ], function() {
+        // stop JS worker loop,
+        // required for graceful shutdown on Chakra
+        require(["wilton/Channel", "wilton/thread"], function(Channel, thread) {
+            var tasks = Channel.lookup("dev/tasks/queue");
+            tasks.send({
+                poisoned: true
+            });
+            // wait for worker to exit,
+            // dev-only logic
+            thread.sleepMillis(500);
+        });
         print("test: PASSED");
     });
 

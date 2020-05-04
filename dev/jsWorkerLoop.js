@@ -23,11 +23,15 @@ define([
     "use strict";
     var logger = new Logger(module.id);
 
-    return function(data) {
-        var input = Channel.lookup("dev/tasks/queue", 0);
-        var output = Channel.lookup("dev/results/queue", 0);
+    return function() {
+        var input = Channel.lookup("dev/tasks/queue");
+        var output = Channel.lookup("dev/results/queue");
         for(;;) {
             var cb = input.receive();
+            if (true === cb.poisoned) {
+//                logger.info("Shutting down worker loop ...");
+                break;
+            }
             var json = JSON.stringify(cb, null, 4);
             try {
                 var res = WILTON_run(json);
